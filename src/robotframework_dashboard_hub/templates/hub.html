@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>placeholder_hub_title</title>
+    <!-- placeholder_dependencies -->
+    <!-- placeholder_css -->
+</head>
+
+<body>
+    <nav class="navbar navbar-expand sticky-top navbar-light ps-4 pe-4 border-bottom pb-1" id="navigation">
+        <div class="d-flex align-items-center me-auto">
+            <a class="nav-link p-0 me-2" id="rflogo" href="https://robotframework.org/" target="_blank" rel="noopener"
+                title="Robot Framework"></a>
+            <span class="navbar-brand mb-0 h1" id="hubTitle"></span>
+        </div>
+        <ul class="navbar-nav flex-row flex-nowrap">
+            <li class="nav-item">
+                <a class="nav-link nav-icon" id="themeDark" role="button" title="Light mode" hidden></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-icon" id="themeLight" role="button" title="Dark mode"></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-icon" id="docs" target="_blank" rel="noopener" title="Documentation"
+                    href="https://github.com/timdegroot1996/robotframework-dashboard-hub#readme"></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-icon" id="bug" target="_blank" rel="noopener" title="Report an issue"
+                    href="https://github.com/timdegroot1996/robotframework-dashboard-hub/issues"></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-icon" id="github" target="_blank" rel="noopener" title="GitHub"
+                    href="https://github.com/timdegroot1996/robotframework-dashboard-hub"></a>
+            </li>
+        </ul>
+    </nav>
+
+    <main class="container-fluid px-4 py-3" id="hub">
+        <div class="d-flex flex-wrap align-items-center gap-3 mb-3">
+            <span class="text-body-secondary" id="generatedInfo"></span>
+            <div class="ms-auto d-flex flex-wrap align-items-center gap-3">
+                <div class="d-flex align-items-center gap-2" id="groupByControl" hidden>
+                    <label class="form-label mb-0" for="groupBy">Projects by</label>
+                    <select class="form-select form-select-sm w-auto" id="groupBy">
+                        <option value="name">run name</option>
+                        <option value="tag">project_ tag</option>
+                    </select>
+                </div>
+                <div class="btn-group btn-group-sm" role="group" aria-label="Trend period">
+                    <input type="radio" class="btn-check" name="trendPeriod" id="trendDaily" value="daily" checked>
+                    <label class="btn btn-outline-secondary" for="trendDaily">Daily</label>
+                    <input type="radio" class="btn-check" name="trendPeriod" id="trendWeekly" value="weekly">
+                    <label class="btn btn-outline-secondary" for="trendWeekly">Weekly</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert alert-warning" id="sourceProblems" role="alert" hidden></div>
+
+        <section class="row g-3 mb-3" id="summaryTiles" aria-label="Summary">
+            <div class="col-6 col-lg-3">
+                <div class="hub-card hub-tile">
+                    <div class="hub-tile-label">Projects</div>
+                    <div class="hub-tile-value" id="tileProjects">-</div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="hub-card hub-tile">
+                    <div class="hub-tile-label">Runs</div>
+                    <div class="hub-tile-value" id="tileRuns">-</div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="hub-card hub-tile" title="Passed tests of the latest run of every project, out of all their tests">
+                    <div class="hub-tile-label">Pass rate, latest runs</div>
+                    <div class="hub-tile-value" id="tilePassRate">-</div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="hub-card hub-tile">
+                    <div class="hub-tile-label">Sources down</div>
+                    <div class="hub-tile-value" id="tileSourcesDown">-</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="row g-3 mb-3" aria-label="Graphs">
+            <div class="col-12 col-xl-6">
+                <div class="hub-card">
+                    <h2 class="hub-card-title">Pass rate trend</h2>
+                    <div class="hub-graph"><canvas id="trendGraph"></canvas></div>
+                </div>
+            </div>
+            <div class="col-12 col-xl-6">
+                <div class="hub-card">
+                    <h2 class="hub-card-title">Latest run per project</h2>
+                    <div class="hub-graph"><canvas id="latestGraph"></canvas></div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="hub-card">
+                    <h2 class="hub-card-title">Average duration per project</h2>
+                    <div class="hub-graph"><canvas id="durationGraph"></canvas></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="hub-card mb-3" aria-label="Projects">
+            <h2 class="hub-card-title">Projects</h2>
+            <table class="table table-sm table-hover w-100" id="projectsTable">
+                <thead>
+                    <tr>
+                        <th>Project</th>
+                        <th>Source</th>
+                        <th>Group</th>
+                        <th>Status</th>
+                        <th>Last run</th>
+                        <th>Passed</th>
+                        <th>Failed</th>
+                        <th>Skipped</th>
+                        <th>Pass rate</th>
+                        <th>Fail rate, last 10</th>
+                        <th>Avg duration</th>
+                        <th>Runs</th>
+                        <th>Dashboard</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+
+        <section class="hub-card mb-3" aria-label="Sources">
+            <h2 class="hub-card-title">Sources</h2>
+            <table class="table table-sm w-100" id="sourcesTable">
+                <thead>
+                    <tr>
+                        <th>Source</th>
+                        <th>Location</th>
+                        <th>Group</th>
+                        <th>Status</th>
+                        <th>Runs</th>
+                        <th>robotdashboard</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+    </main>
+
+    <!-- placeholder_javascript -->
+</body>
+
+</html>

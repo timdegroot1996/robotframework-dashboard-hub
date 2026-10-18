@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+env:
+  # until the robotframework-dashboard release with get_run_stats is on PyPI: its branch.
+  # After that release, remove this and the install step that uses it, and raise the minimum in pyproject.toml.
+  DASHBOARD: "robotframework-dashboard[server] @ git+https://github.com/MarketSquare/robotframework-dashboard@feat/294-hub-phase0"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - run: pip install "${{ env.DASHBOARD }}"
+      - run: pip install -e .[dev]
+      - run: ruff check .
+      - run: ruff format --check .
+      - run: mypy
+
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        # oldest and newest supported Python; the package is pure Python
+        python: ["3.10", "3.14"]
+    name: test (${{ matrix.os }}, py${{ matrix.python }})
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: pip install "${{ env.DASHBOARD }}"
+      - run: pip install -e .[dev]
+      - run: pytest

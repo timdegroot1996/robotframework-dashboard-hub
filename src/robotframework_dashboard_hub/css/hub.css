@@ -1,0 +1,87 @@
+:root {
+  font-family: Helvetica, sans-serif;
+}
+
+body,
+.sticky-top {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+.border-bottom {
+  border-color: var(--color-border) !important;
+}
+
+.navbar .nav-icon {
+  cursor: pointer;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.navbar-brand {
+  color: var(--color-menu-text) !important;
+}
+
+.hub-card {
+  background-color: var(--color-section-card-bg);
+  border: 1px solid var(--color-section-card-border);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px var(--color-shadow-soft);
+  padding: 1rem;
+  height: 100%;
+}
+
+.hub-card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.hub-tile-label {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
+.hub-tile-value {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.hub-graph {
+  position: relative;
+  height: 300px;
+}
+
+.hub-status {
+  color: #000;
+}
+
+.hub-status-passed,
+.hub-status-ok {
+  background-color: var(--color-passed);
+}
+
+.hub-status-failed,
+.hub-status-error {
+  background-color: var(--color-failed);
+  color: #fff;
+}
+
+.hub-status-skipped,
+.hub-status-unreachable {
+  background-color: var(--color-skipped);
+}
+
+.hub-status-none {
+  background-color: var(--color-track-bg);
+  color: var(--color-text);
+}
+
+.hub-source-down td {
+  color: var(--color-text-muted);
+}
+
+.table {
+  --bs-table-bg: transparent;
+  color: var(--color-table-text);
+}
